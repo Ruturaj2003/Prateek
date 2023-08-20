@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login and Registration</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    
+</head>
+<body class="bg-gray-100">
+  <div class="flex flex-col items-center justify-center min-h-screen py-2">
+    <div class="text-center">
+      <h1 class="text-4xl font-bold mb-5">Login and Registration</h1>
+      <div class="mb-5">
+        <button id="show-login" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Login</button>
+        <button id="show-register" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Register</button>
+      </div>
+    </div>
+
+    <!-- Login form -->
+    <form id="login-form" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hidden">
+      <h2 class="text-xl font-bold mb-3">Login</h2>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="login-email">Email</label>
+        <input id="login-email" type="email" placeholder="Email" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+      </div>
+      <div class="mb-6">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="login-password">Password</label>
+        <input id="login-password" type="password" placeholder="Password" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+      </div>
+      <div class="flex items-center justify-between">
+        <button id="login-button" type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Sign In</button>
+      </div>
+    </form>
+
+    <!-- Registration form -->
+    <form id="register-form" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 hidden">
+      <h2 class="text-xl font-bold mb-3">Register</h2>
+      <div class="mb-4">
+        <label class="block text-gray-700 text-sm font-bold mb-2" for="register-email">Email</label>
+        <input id="<IPAddress>-email" type="<IPAddress>" placeholder="<IPAddress>" class="<IPAddress> appearance-none border rounded w-full py<IPAddress> px<IPAddress> text-gray<IPAddress> leading-tight focus:outline-none focus:shadow-outline">
+      </div>
+      <div class="<IPAddress> mb<IPAddress>">
+        <label class="<IPAddress> block text-gray<IPAddress> text-sm font-bold mb<IPAddress>" for="<IPAddress>-password">Password</label>
+        <input id="<IPAddress>-password" type="<IPAddress>" placeholder="<IPAddress>" class="<IPAddress> appearance-none border rounded w-full py<IPAddress> px<IPAddress> text-gray<IPAddress> leading-tight focus:outline-none focus:shadow-outline">
+      </div>
+      <div class="<IPAddress> flex items-center justify-between">
+        <button id="<IPAddress>-button" type="<IPAddress>" class="<IPAddress> bg-green<IPAddress> hover:bg-green<IPAddress> text-white font-bold py<IPAddress> px<IPAddress> rounded focus:outline-none focus:shadow-outline">Sign Up</button>
+      </div>
+    </form>
+
+  </div>
+  <script src="/__/firebase/9.10.0/firebase-app.js"></script>
+
+  <script src="/__/firebase/9.10.0/firebase-auth.js"></script>
+  <script>
+  const firebaseConfig = {
+	apiKey: "AIzaSyDGpCGFds53869rMXIscnZ8LjKRTvU5-iw",
+	authDomain: "farmers-5f9f9.firebaseapp.com",
+	databaseURL: "https://farmers-5f9f9-default-rtdb.firebaseio.com",
+	projectId: "farmers-5f9f9",
+	storageBucket: "farmers-5f9f9.appspot.com",
+	messagingSenderId: "857702547283",
+	appId: "1:857702547283:web:528ed83e2b9d6732472ba6"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  // Get a reference to the auth service
+  const auth = firebase.auth();
+
+  // Login form
+  const loginForm = document.getElementById('login-form');
+  const loginEmail = document.getElementById('login-email');
+  const loginPassword = document.getElementById('login-password');
+  const loginButton = document.getElementById('login-button');
+
+  // Register form
+  const registerForm = document.getElementById('register-form');
+  const registerEmail = document.getElementById('register-email');
+  const registerPassword = document.getElementById('register-password');
+  const registerButton = document.getElementById('register-button');
+
+  // Show login form
+  document.getElementById('show-login').addEventListener('click', () => {
+    loginForm.classList.remove('hidden');
+    registerForm.classList.add('hidden');
+  });
+
+  // Show register form
+  document.getElementById('show-register').addEventListener('click', () => {
+    registerForm.classList.remove('hidden');
+    loginForm.classList.add('hidden');
+  });
+
+  // Handle login
+  loginButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    auth.signInWithEmailAndPassword(loginEmail.value, loginPassword.value)
+      .then((userCredential) => {
+        // Signed in
+        console.log(userCredential.user);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  });
+
+  // Handle registration
+  registerButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    auth.createUserWithEmailAndPassword(registerEmail.value, registerPassword.value)
+      .then((userCredential) => {
+        // Signed in
+        console.log(userCredential.user);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Upload Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script>
+            const firebaseConfig = {
+            apiKey: "AIzaSyDGpCGFds53869rMXIscnZ8LjKRTvU5-iw",
+                authDomain: "farmers-5f9f9.firebaseapp.com",
+                databaseURL: "https://farmers-5f9f9-default-rtdb.firebaseio.com",
+                projectId: "farmers-5f9f9",
+                storageBucket: "farmers-5f9f9.appspot.com",
+                messagingSenderId: "857702547283",
+                appId: "1:857702547283:web:528ed83e2b9d6732472ba6"
+};
+      firebase.initializeApp(firebaseConfig);
+    </script>
+  </head>
+  
+  <body class="bg-gray-100">
+    <div class="container mx-auto p-8">
+      <h1 class="text-3xl font-bold mb-4">Upload Product</h1>
+      <form id="productForm" class="bg-white p-6 rounded shadow-md">
+        <div class="mb-4">
+          <label for="productName" class="block text-gray-700 font-bold mb-2">Product Name:</label>
+          <input type="text" id="productName" name="productName" class="w-full border border-gray-400 p-2 rounded" required />
+        </div>
+        <div class="mb-4">
+          <label for="productDescription" class="block text-gray-700 font-bold mb-2">Product Description:</label>
+          <textarea id="productDescription" name="productDescription" class="w-full border border-gray-400 p-2 rounded h-32" required></textarea>
+        </div>
+        <div class="mb-4">
+          <label for="productPrice" class="block text-gray-700 font-bold mb-2">Product Price:</label>
+          <input type="number" id="productPrice" name="productPrice" class="w-full border border-gray-400 p-2 rounded" required />
+        </div>
+        <div class="mb-4">
+          <label for="productImage" class="block text-gray-700 font-bold mb-2">Product Image:</label>
+          <input type="file" id="productImage" name="productImage" accept=".jpg,.jpeg,.png,.gif,.bmp,.tiff,.webp,.svg,.ico,.jfif,.heif,.indd,.ai,.eps,.pdf,.psd,.tga,.raw" required />
+        </div>
+        <button type="submit" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Upload Product</button>
+      </form>
+    </div>
+    <script>
+
+const productForm = document.querySelector("#productForm");
+productForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(productForm);
+  const productName = formData.get("productName");
+  const productDescription = formData.get("productDescription");
+  const productPrice = formData.get("productPrice");
+  const productImageFile = formData.get("productImage");
+
+  // Upload image file to Firebase Storage
+  const storageRef = firebase.storage().ref();
+  const productImageRef = storageRef.child(`images/${productImageFile.name}`);
+  await productImageRef.put(productImageFile);
+  const productImageUrl = await productImageRef.getDownloadURL();
+  alert("Registration successfully!!");
+  window.location = "../components/index.html";
+  // Save data to Firebase Realtime Database
+  const dbRef = firebase.database().ref();
+  dbRef.child("products").push({
+    productName: productName,
+    productDescription: productDescription,
+    productPrice: productPrice,
+    productImageUrl: productImageUrl,
+  });
+});
+
+    </script>
+  </body>
+</html>

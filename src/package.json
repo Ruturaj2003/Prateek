@@ -1,0 +1,21 @@
+{
+  "name": "smartfarm",
+  "version": "1.0.0",
+  "description": "Project for College",
+  "main": "./src/index.js",
+  "scripts": {
+    "watch": "tailwindcss -i ./input.css -o ./css/style.css --watch",
+    "build": "tailwindcss -i ./input.css -o ./css/style.css",
+    "ptk": "webpack"
+  },
+  "author": "Prateek Janagouda",
+  "license": "None",
+  "devDependencies": {
+    "prettier": "^2.8.8",
+    "prettier-plugin-tailwindcss": "^0.3.0",
+    "tailwindcss": "^3.0.24"
+  },
+  "dependencies": {
+  },
+  "keywords": []
+}
